@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /*
- * Temps pour programmer cette partie: 1H.h
+ * Temps pour programmer cette partie: 1.5H.h
  */
 
 public class Main {
