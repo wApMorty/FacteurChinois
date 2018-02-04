@@ -2,9 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
- * Temps pour programmer cette partie: 1.5H.h
+ * Temps pour programmer cette partie: 2H.h
  */
 
 public class Niveau0 {
@@ -13,16 +14,12 @@ public class Niveau0 {
 	private static int nbLignes=10;
 	
 	public static void main(String[] args) {
-		int[][] matrice = matriceAdjacence("facteur6_1.txt");
-		for (int i = 0; i<matrice.length; i++) {
-			for (int j = 0; j<matrice[0].length; j++) {
-				System.out.print(matrice[i][j]+" ");
-			}
-			System.out.println();
-		}
+		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence("facteur6_1.txt");
+		System.out.println(matrice);
 
 	}
 	
+	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
 	public static int[][] lectureFichier(String fichier){
 		int[][] output = null;
 		try {
@@ -48,26 +45,58 @@ public class Niveau0 {
 		return output;
 	}
 	
-	public static int[][] matriceAdjacence(String fichier){
+	//Methode qui transforme un fichier texte en matrice d'adjacence. On est passe d'un [][]int a une double ArrayList car bloquant pour la methode estUnPont
+	public static ArrayList<ArrayList<Integer>> matriceAdjacence(String fichier){
 		//Extraction des donnees
 		int[][] data = lectureFichier(fichier);
 		//Initialisation de la matrice resultat
-		int[][] mat = new int[nbPoints][nbPoints];
+		ArrayList<ArrayList<Integer>> mat = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> vide = new ArrayList<Integer>();
 		for (int i = 0; i<nbPoints; i++) {
-			for (int j = 0; j<nbPoints; j++) {
-				mat[i][j] = 0;
-			}
+			vide.add(0);
 		}
-		//Traitement des donnees pour remplir la matrice resultat. On suppose que tous
-		// les points ont un poids de 1
+		for (int j = 0; j<nbPoints; j++){
+			mat.add(vide);
+		}
 		for (int i = 1; i<data.length; i++) {
-			int a = data[i][0];
-			int b = data[i][1];
-			mat[a-1][b-1]=1; //On ajoute un correectif de -1 au cas où le point 1 soit numerote 0
-			mat[b-1][a-1]=1;
+			for (int j = 1; j<data[0].length; j++) {
+				int a = data[i][0];
+				int b = data[i][1];
+				mat.get(a-1).set(b-1, 1);
+				mat.get(b-1).set(a-1, 1);
+			}
 		}
 		return mat;		 
 	}
 	
+	//Methode qui permet de convertir la matrice d'adjacence en pseudo graph (passe d'un int[][] à une double ArrayList, necessaire pour l'algorithme de Fleury
+	public static ArrayList<ArrayList<Integer>> drawGraph(int[][] matrice){
+		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>(); //On cree une ArrayList a deux dimensions = matrice)
+		for (int i = 0; i<matrice.length; i++) {
+			ArrayList<Integer> ligne = new ArrayList<Integer>();
+			for (int j = i+1; j<matrice[0].length; j++) {
+				ligne.add(matrice[i][j]);
+			}
+			graph.add(ligne);
+		}
+		return graph;
+	}
+	
+	public static boolean estUnPont(int x, int y) {
+		boolean isPont = true;
+		
+		return isPont;
+	}
+	
+	//TO DO
+	public ArrayList<Integer> Fleury (ArrayList<ArrayList<Integer>> G, int x){
+		ArrayList<Integer> C = new ArrayList<Integer>(); //Integer au lieu de int parce que les types de base marchent pas, need un wrapper
+		C.add(x);
+		while (!G.isEmpty()) { //Tant que G n'est pas vide
+			
+		}
+		
+		return C;
+	}
 
 }
