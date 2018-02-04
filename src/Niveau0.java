@@ -7,7 +7,7 @@ import java.io.IOException;
  * Temps pour programmer cette partie: 1.5H.h
  */
 
-public class Main {
+public class Niveau0 {
 
 	private static int nbPoints;
 	private static int nbLignes=10;
