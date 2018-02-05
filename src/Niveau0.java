@@ -51,20 +51,25 @@ public class Niveau0 {
 		int[][] data = lectureFichier(fichier);
 		//Initialisation de la matrice resultat
 		ArrayList<ArrayList<Integer>> mat = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> vide = new ArrayList<Integer>();
-		for (int i = 0; i<nbPoints; i++) {
-			vide.add(0);
-		}
-		for (int j = 0; j<nbPoints; j++){
-			mat.add(vide);
-		}
-		for (int i = 1; i<data.length; i++) {
-			for (int j = 1; j<data[0].length; j++) {
-				int a = data[i][0];
-				int b = data[i][1];
-				mat.get(a-1).set(b-1, 1);
-				mat.get(b-1).set(a-1, 1);
+		for(int i = 0; i<nbPoints; i++) {
+			ArrayList<Integer> ligne = new ArrayList<Integer>();
+			for (int j = 0; j<nbPoints; j++) {
+				ligne.add(0);
 			}
+			mat.add(ligne);
+		}
+		//Remplissage de la matrice
+		//TO DO : Gerer les problemes d'indice
+		for (int i = 1; i<nbPoints;i++) {
+			for (int j = 1; j<data.length; j++) {
+				if (data[j][0]==i) {
+					mat.get(i-1).set(data[j][1], 1);
+				}
+				if (data[j][1]==i) {
+					mat.get(i-1).set(data[j][0], 1);
+				}
+			}
+			
 		}
 		return mat;		 
 	}
