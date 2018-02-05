@@ -89,6 +89,7 @@ public class Niveau0 {
 		return graph;
 	}
 	
+	//TO DO
 	public static boolean estUnPont(int x, int y) {
 		boolean isPont = true;
 		
@@ -106,4 +107,10 @@ public class Niveau0 {
 		return C;
 	}
 
+	//TO DO
+	public ArrayList<ArrayList<Integer>> produit (ArrayList<ArrayList<Integer>> a, ArrayList<ArrayList<Integer>> b){
+		ArrayList<ArrayList<Integer>> produit = new ArrayList<ArrayList<Integer>>();
+		
+		return produit;
+	}
 }
