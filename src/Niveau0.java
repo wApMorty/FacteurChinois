@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /*
- * Temps pour programmer cette partie: 2H.h
+ * Temps pour programmer cette partie: 2.5H.h
  */
 
 public class Niveau0 {
@@ -20,6 +20,7 @@ public class Niveau0 {
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
+	//OK : Plus toucher
 	public static int[][] lectureFichier(String fichier){
 		int[][] output = null;
 		try {
@@ -46,6 +47,7 @@ public class Niveau0 {
 	}
 	
 	//Methode qui transforme un fichier texte en matrice d'adjacence. On est passe d'un [][]int a une double ArrayList car bloquant pour la methode estUnPont
+	// OK : Plus toucher
 	public static ArrayList<ArrayList<Integer>> matriceAdjacence(String fichier){
 		//Extraction des donnees
 		int[][] data = lectureFichier(fichier);
@@ -59,22 +61,22 @@ public class Niveau0 {
 			mat.add(ligne);
 		}
 		//Remplissage de la matrice
-		//TO DO : Gerer les problemes d'indice
-		for (int i = 1; i<nbPoints;i++) {
+		for (int i = 1; i<nbPoints+1;i++) {
 			for (int j = 1; j<data.length; j++) {
-				if (data[j][0]==i) {
-					mat.get(i-1).set(data[j][1], 1);
+				int a = data[j][0], b = data[j][1];
+				if (a==i) {
+					mat.get(i-1).set(b-1, 1);
 				}
-				if (data[j][1]==i) {
-					mat.get(i-1).set(data[j][0], 1);
+				if (b==i) {
+					mat.get(i-1).set(a-1, 1);
 				}
 			}
-			
 		}
 		return mat;		 
 	}
 	
 	//Methode qui permet de convertir la matrice d'adjacence en pseudo graph (passe d'un int[][] à une double ArrayList, necessaire pour l'algorithme de Fleury
+	// OK : Plus toucher
 	public static ArrayList<ArrayList<Integer>> drawGraph(int[][] matrice){
 		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>(); //On cree une ArrayList a deux dimensions = matrice)
 		for (int i = 0; i<matrice.length; i++) {
