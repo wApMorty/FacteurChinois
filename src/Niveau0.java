@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /*
- * Temps pour programmer cette partie: 2.5H.h
+ * Temps pour programmer cette partie: 3.5H.h
  */
 
 public class Niveau0 {
@@ -14,7 +14,7 @@ public class Niveau0 {
 	private static int nbLignes=10;
 	
 	public static void main(String[] args) {
-		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt"); //Le graphe marche pas
+		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt");
 		System.out.println(graph);
 		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
 		System.out.println(matrice);
@@ -108,9 +108,9 @@ public class Niveau0 {
 	public static ArrayList<ArrayList<Integer>> drawGraph(String texte){
 		int[][] data = lectureFichier(texte);
 		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>(); //On cree une ArrayList a deux dimensions = matrice)
-		for (int i = 0; i<data.length; i++) {
+		for (int i = 1; i<data.length; i++) {
 			ArrayList<Integer> ligne = new ArrayList<Integer>();
-			for (int j = i+1; j<data[0].length; j++) {
+			for (int j = 0; j<data[0].length; j++) {
 				ligne.add(data[i][j]);
 			}
 			graph.add(ligne);
