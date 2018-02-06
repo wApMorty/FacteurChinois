@@ -5,21 +5,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /*
- * Temps pour programmer cette partie: 3.5H.h
+ * Temps pour programmer cette partie: 4H.h
  */
 
 public class Niveau0 {
 
 	private static int nbPoints;
-	private static int nbLignes=10;
+	private static int nbLignes=0;
 	
 	public static void main(String[] args) {
+		System.out.println(nbLignes);
 		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt");
 		System.out.println(graph);
 		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
 		System.out.println(matrice);
-		ArrayList<ArrayList<Integer>> matrice2 = matriceAdjacence("facteur6_1.txt");
-		System.out.println(matrice2);
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
@@ -31,14 +30,21 @@ public class Niveau0 {
 			FileReader fr = new FileReader(fichier);
 			BufferedReader br = new BufferedReader(fr);
 			//Initialisation du tableau qu'on va recuperer
-			//On sait que la premiere ligne contient forcement le nombre de lignes
+			//On sait que la premiere ligne contient forcement le nombre de sommets
 			nbPoints = Integer.parseInt(br.readLine());
+			//On boucle pour compter le nombre de lignes 
+			String ligne = br.readLine();
+			while(ligne != null) {
+				ligne = br.readLine();
+				nbLignes++;
+			}
+			nbLignes--;
 			output = new int[nbLignes][2];
 			//On boucle pour remplir notre tableau a partir des donnees du .txt
 			for (int i = 1; i<nbLignes; i++) {
-				String[] ligne = br.readLine().split(" ");
-				for (int j = 0; j<ligne.length; j++) {
-					output[i][j] = Integer.parseInt(ligne[j]);
+				String[] currentLine = br.readLine().split(" ");
+				for (int j = 0; j<currentLine.length; j++) {
+					output[i][j] = Integer.parseInt(currentLine[j]);
 				}
 			}
 			br.close();
@@ -79,7 +85,7 @@ public class Niveau0 {
 	}
 	
 	//Constructeur matrice d'adjacence a partir d'un graphe
-	//FIX IT
+	//DONE
 	public static ArrayList<ArrayList<Integer>> matriceAdjacence(ArrayList<ArrayList<Integer>> graph){
 		ArrayList<ArrayList<Integer>> mat = new ArrayList<ArrayList<Integer>>();
 		for(int i = 0; i<nbPoints; i++) {
@@ -90,8 +96,8 @@ public class Niveau0 {
 			mat.add(ligne);
 		}
 		//Remplissage de la matrice
-		for (int i = 1; i<nbPoints+1;i++) {
-			for (int j = 1; j<graph.size(); j++) {
+		for (int i = 0; i<nbPoints+1;i++) {
+			for (int j = 0; j<graph.size(); j++) {
 				int a = graph.get(j).get(0);
 				int b = graph.get(j).get(1);
 				if (a==i) {
@@ -120,7 +126,8 @@ public class Niveau0 {
 		return graph;
 	}
 	
-	//TO DO
+	//Methode qui verifie que l'arete (x,y) d'un graph est un pont. Return true/false
+	//DONE
 	public static boolean estUnPont(ArrayList<ArrayList<Integer>> graph, int x, int y) {
 		boolean isPont = true;
 		//On retire l'arete du graphe
@@ -131,7 +138,19 @@ public class Niveau0 {
 				graph.remove(i);
 			}
 		}
-		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
+		ArrayList<ArrayList<Integer>> a = matriceAdjacence(graph);
+		ArrayList<ArrayList<Integer>> s = puissance(a,0);
+		for (int k = 1; k<nbPoints-1 ; k++) {
+			for (int i = 0; i < s.size(); i++) {
+				for (int j = 0; j < s.size(); j++) {
+					s.get(i).set(j, puissance(a,k).get(i).get(j));
+				}
+			}
+		}
+		//On boucle pour tester la valeur de s_i,j et verifier que l'arete (i,j) est un pont ou non
+		if (s.get(x).get(y)!=0) {
+			isPont = false;
+		}
 		
 		return isPont;
 	}
@@ -169,17 +188,30 @@ public class Niveau0 {
 	//DONE
 	public static ArrayList<ArrayList<Integer>> puissance (ArrayList<ArrayList<Integer>> a, int n){
 		ArrayList<ArrayList<Integer>> a0 = new ArrayList<ArrayList<Integer>>();
-		//Creation de la copie de a, a0
-		for (int i = 0; i<a.size(); i++) {
-			ArrayList<Integer> ligne = new ArrayList<Integer>();
-			for (int j = 0; j<a.get(0).size(); j++) {
-				ligne.add(a.get(i).get(j));
+		if (n!=0) {
+			//Creation de la copie de a, a0
+			for (int i = 0; i < a.size(); i++) {
+				ArrayList<Integer> ligne = new ArrayList<Integer>();
+				for (int j = 0; j < a.get(0).size(); j++) {
+					ligne.add(a.get(i).get(j));
+				}
+				a0.add(ligne);
 			}
-			a0.add(ligne);
-		}
-		//Bouclage de la montee en puissance de a^n
-		for (int k = 1; k<n; k++) {
-			a0 = produit(a,a0);
+			//Bouclage de la montee en puissance de a^n
+			for (int k = 1; k < n; k++) {
+				a0 = produit(a, a0);
+			} 
+		} else {
+			for (int i = 0; i<a.size(); i++) {
+				ArrayList<Integer> ligne = new ArrayList<Integer>();
+				for (int j = 0; j<a.get(i).size(); j++) {
+					if (i == j) {
+						ligne.add(1);
+					} else {
+						ligne.add(0);
+					}
+				}
+			}
 		}
 		return a0;
 	}
