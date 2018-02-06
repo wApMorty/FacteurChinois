@@ -18,6 +18,8 @@ public class Niveau0 {
 		System.out.println(graph);
 		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
 		System.out.println(matrice);
+		ArrayList<ArrayList<Integer>> matrice2 = matriceAdjacence("facteur6_1.txt");
+		System.out.println(matrice2);
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
@@ -77,7 +79,7 @@ public class Niveau0 {
 	}
 	
 	//Constructeur matrice d'adjacence a partir d'un graphe
-	//TO DO
+	//FIX IT
 	public static ArrayList<ArrayList<Integer>> matriceAdjacence(ArrayList<ArrayList<Integer>> graph){
 		ArrayList<ArrayList<Integer>> mat = new ArrayList<ArrayList<Integer>>();
 		for(int i = 0; i<nbPoints; i++) {
@@ -129,7 +131,8 @@ public class Niveau0 {
 				graph.remove(i);
 			}
 		}
-		ArrayList<ArrayList<Integer>> matrice = 
+		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
+		
 		return isPont;
 	}
 	
