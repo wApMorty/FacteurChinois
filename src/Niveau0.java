@@ -11,10 +11,9 @@ import java.util.ArrayList;
 public class Niveau0 {
 
 	private static int nbPoints;
-	private static int nbLignes=0;
+	private static int nbLignes=10;
 	
 	public static void main(String[] args) {
-		System.out.println(nbLignes);
 		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt");
 		System.out.println(graph);
 		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
@@ -22,7 +21,7 @@ public class Niveau0 {
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
-	//OK : Plus toucher
+	//DONE
 	public static int[][] lectureFichier(String fichier){
 		int[][] output = null;
 		try {
@@ -32,13 +31,6 @@ public class Niveau0 {
 			//Initialisation du tableau qu'on va recuperer
 			//On sait que la premiere ligne contient forcement le nombre de sommets
 			nbPoints = Integer.parseInt(br.readLine());
-			//On boucle pour compter le nombre de lignes 
-			String ligne = br.readLine();
-			while(ligne != null) {
-				ligne = br.readLine();
-				nbLignes++;
-			}
-			nbLignes--;
 			output = new int[nbLignes][2];
 			//On boucle pour remplir notre tableau a partir des donnees du .txt
 			for (int i = 1; i<nbLignes; i++) {
@@ -56,7 +48,7 @@ public class Niveau0 {
 	}
 	
 	//Methode qui transforme un fichier texte en matrice d'adjacence. On est passe d'un [][]int a une double ArrayList car bloquant pour la methode estUnPont
-	// DONE
+	//DONE
 	public static ArrayList<ArrayList<Integer>> matriceAdjacence(String fichier){
 		//Extraction des donnees
 		int[][] data = lectureFichier(fichier);
@@ -112,7 +104,7 @@ public class Niveau0 {
 	}
 	
 	//Methode qui permet de convertir la matrice d'adjacence en pseudo graph (passe d'un int[][] à une double ArrayList, necessaire pour l'algorithme de Fleury
-	// OK : Plus toucher
+	//DONE
 	public static ArrayList<ArrayList<Integer>> drawGraph(String texte){
 		int[][] data = lectureFichier(texte);
 		ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>(); //On cree une ArrayList a deux dimensions = matrice)
