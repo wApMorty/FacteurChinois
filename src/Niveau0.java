@@ -16,8 +16,10 @@ public class Niveau0 {
 	public static void main(String[] args) {
 		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt");
 		System.out.println(graph);
-		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence(graph);
+		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence("facteur6_1.txt");
 		System.out.println(matrice);
+		ArrayList<Integer> chemin = Fleury(graph, 1);
+		System.out.println(chemin);
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
@@ -119,14 +121,17 @@ public class Niveau0 {
 	}
 	
 	//Methode qui verifie que l'arete (x,y) d'un graph est un pont. Return true/false
-	//DONE
+	//NEED FIX
 	public static boolean estUnPont(ArrayList<ArrayList<Integer>> graph, int x, int y) {
 		boolean isPont = true;
+		//On stocke les aretes retirees pour pouvoir les remettre apres
+		ArrayList<ArrayList<Integer>> removed = new ArrayList<ArrayList<Integer>>();
 		//On retire l'arete du graphe
 		for (int i = 0; i<graph.size(); i++) {
 			int a = graph.get(i).get(0);
 			int b = graph.get(i).get(1);
 			if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
+				removed.add(graph.get(i));
 				graph.remove(i);
 			}
 		}
@@ -144,15 +149,61 @@ public class Niveau0 {
 			isPont = false;
 		}
 		
+		//On remet les aretes retirees a l'interieur du graphe
+		for (int i = 0; i<removed.size(); i++) {
+			graph.add(removed.get(i));
+		}
+		
 		return isPont;
 	}
 	
-	//TO DO
+	//Methode qui renvoie une ArrayList avec les successeurs d'un point x dans un graph g
+	//DONE
+	public static ArrayList<Integer> successeurs (ArrayList<ArrayList<Integer>> g, int x) {
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		for (int i = 0; i<g.size(); i++) {
+			int a = g.get(i).get(0);
+			int b = g.get(i).get(1);
+			if (a == x) {
+				s.add(b);
+			} else if (b == x) {
+				s.add(a);
+			}
+		}
+		return s;
+	}
+	
+	//NEED A TEST
 	public static ArrayList<Integer> Fleury (ArrayList<ArrayList<Integer>> G, int x){
 		ArrayList<Integer> C = new ArrayList<Integer>(); //Integer au lieu de int parce que les types de base marchent pas, need un wrapper
 		C.add(x);
+		//On va enlever des aretes plus tard donc on les stock pour pouvoir les remettre apres traitement
+		ArrayList<ArrayList<Integer>> removed = new ArrayList<ArrayList<Integer>>();
 		while (!G.isEmpty()) { //Tant que G n'est pas vide
-			
+			//On recupere l'ensemble des successeurs qu'on stocke dans une liste
+			ArrayList<Integer> successeurs = successeurs(G, x);
+			int i = 0;
+			int y = successeurs.get(i);
+			while ((estUnPont(G, x, y))&&(successeurs.size()>1)) {
+				i++;
+				y = successeurs.get(i);
+			}
+			C.add(y);
+			//On parcourt G pour retrouver l'arete (x,y) et la remove
+			for (int k = 0; k<G.size(); k++) {
+				int a = G.get(k).get(0);
+				int b = G.get(k).get(1);
+				if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
+					removed.add(G.get(k));
+					G.remove(k);
+				}
+			}
+			x = y;
+		}
+		
+		//On re remplit le graph 
+		for (int i = 0; i<removed.size(); i++) {
+			G.add(removed.get(i));
 		}
 		
 		return C;
