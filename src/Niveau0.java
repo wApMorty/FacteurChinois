@@ -14,6 +14,7 @@ public class Niveau0 {
 	private static int nbLignes=10;
 	
 	public static void main(String[] args) {
+		
 		ArrayList<ArrayList<Integer>> graph = drawGraph("facteur6_1.txt");
 		System.out.println(graph);
 		ArrayList<ArrayList<Integer>> matrice = matriceAdjacence("facteur6_1.txt");
@@ -166,8 +167,10 @@ public class Niveau0 {
 			int b = g.get(i).get(1);
 			if (a == x) {
 				s.add(b);
-			} else if (b == x) {
-				s.add(a);
+			} else {
+				if (b == x) {
+					s.add(a);	
+				}	
 			}
 		}
 		return s;
@@ -182,6 +185,7 @@ public class Niveau0 {
 		while (!G.isEmpty()) { //Tant que G n'est pas vide
 			//On recupere l'ensemble des successeurs qu'on stocke dans une liste
 			ArrayList<Integer> successeurs = successeurs(G, x);
+			System.out.println(successeurs);
 			int i = 0;
 			int y = successeurs.get(i);
 			while ((estUnPont(G, x, y))&&(successeurs.size()>1)) {
@@ -254,6 +258,7 @@ public class Niveau0 {
 						ligne.add(0);
 					}
 				}
+				a0.add(ligne);
 			}
 		}
 		return a0;
