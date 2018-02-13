@@ -14,7 +14,7 @@ public class Graph {
 	}
 	
 	public Graph (String texte) {
-		this.aretes = new ArrayList<Arete>();
+		ArrayList<Arete> aretes = new ArrayList<Arete>();
 		int[][] data = lectureFichier(texte);//On cree une ArrayList a deux dimensions = matrice)
 		for (int i = 1; i<data.length; i++) {
 			this.add(data[i][0], data[i][1]);
@@ -69,4 +69,49 @@ public class Graph {
 		}
 		return output;
 	}	
+	
+	//Methode qui renvoie une ArrayList avec les successeurs d'un point x dans un graph g
+	//DONE
+	public static ArrayList<Integer> successeurs (int x) {
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		for (int i = 0; i<aretes.size(); i++) {
+			int a = aretes.get(i).a;
+			int b = aretes.get(i).b;
+			if (a == x) {
+				s.add(b);
+			} else {
+				if (b == x) {
+					s.add(a);	
+				}	
+			}
+		}
+		return s;
+	}
+	
+	public boolean estUnPont(int x, int y) {
+		boolean isPont = true;
+		//On stocke les aretes retirees pour pouvoir les remettre apres
+		ArrayList<Arete> removed = new ArrayList<Arete>();
+		//On retire l'arete du graphe
+		for (int i = 0; i<aretes.size(); i++) {
+			int a = aretes.get(i).a;
+			int b = aretes.get(i).b;
+			if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
+				removed.add(aretes.get(i));
+				remove(a,b);
+			}
+		}
+		MatriceAdjacence a = new MatriceAdjacence(this);
+		int[][] s = Matrix.identity(nbPoints);
+		//On boucle pour calculer la somme S dans l'algorithme de Fleury
+		for (int k = 1; k<nbPoints-1; k++) {
+			s = Matrix.add(s, Matrix.power(a.data,k));
+		}
+		//On boucle pour tester la valeur de s_i,j et verifier que l'arete (i,j) est un pont ou non
+		if (s[x][y]!=0) {
+			isPont = false;
+		}
+		
+		return isPont;
+	}
 }
