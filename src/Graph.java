@@ -14,6 +14,7 @@ public class Graph {
 	}
 	
 	public Graph (String texte) {
+		this.aretes = new ArrayList<Arete>();
 		int[][] data = lectureFichier(texte);//On cree une ArrayList a deux dimensions = matrice)
 		for (int i = 1; i<data.length; i++) {
 			this.add(data[i][0], data[i][1]);
@@ -22,24 +23,24 @@ public class Graph {
 	
 	//Ajouter une arete
 	public void add(Arete a) {
-		getAretes().add(a);
+		aretes.add(a);
 	}
 	
 	//Methode pour ajouter une arete sans devoir declarer les aretes
 	public void add (int a, int b) {
 		Arete arete = new Arete(a, b);
-		getAretes().add(arete);
+		aretes.add(arete);
 	}
 	
 	//Retirer une arete
 	public void remove(Arete a) {
-		getAretes().remove(a);
+		aretes.remove(a);
 	}
 	
 	//Methode pour retirer une arete sans devoir la declarer
 	public void remove (int a, int b) {
 		Arete arete = new Arete(a, b);
-		getAretes().remove(arete);
+		aretes.remove(arete);
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
@@ -67,33 +68,5 @@ public class Graph {
 			e.printStackTrace();
 		}
 		return output;
-	}
-
-	public static ArrayList<Arete> getAretes() {
-		return aretes;
-	}
-
-	public static void setAretes(ArrayList<Arete> aretes) {
-		Graph.aretes = aretes;
-	}
-
-	public static int getNbLignes() {
-		return nbLignes;
-	}
-
-	public static void setNbLignes(int nbLignes) {
-		Graph.nbLignes = nbLignes;
-	}
-
-	public static int getNbPoints() {
-		return nbPoints;
-	}
-
-	public static void setNbPoints(int nbPoints) {
-		Graph.nbPoints = nbPoints;
-	}
-	
-	
-	
-	
+	}	
 }

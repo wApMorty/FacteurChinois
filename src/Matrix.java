@@ -1,7 +1,9 @@
+@SuppressWarnings("static-access")
+
 public abstract class Matrix {
 
-	protected int[][] data;
-	protected int n, m;
+	protected static int[][] data;
+	protected static int n, m;
 	
 	//empty constructor
 	public Matrix (int n, int m) {
@@ -119,5 +121,16 @@ public abstract class Matrix {
     		b = multiply(b,a);
     	}
     	return b;    	
+    }
+    
+    //prints the matrix
+    public static void show() {
+    	for (int i = 0; i<n; i++) {
+    		System.out.print("[");
+    		for (int j = 0; j<m; j++) {
+    			System.out.print(" " + data[i][j]);
+    		}
+    		System.out.println("]");
+    	}
     }
 }
