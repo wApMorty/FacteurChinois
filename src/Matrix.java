@@ -1,5 +1,27 @@
-public class Matrix {
+public abstract class Matrix {
 
+	protected int[][] data;
+	protected int n, m;
+	
+	//empty constructor
+	public Matrix (int n, int m) {
+		this.n = n;
+		this.m = m;
+		this.data = new int[n][m];
+	}
+	
+	//constructor
+	public Matrix (int[][] a) {
+		n = a.length;
+		m = a[0].length;
+		this.data = new int[n][m];
+		for (int i = 0; i<n ; i++) {
+			for (int j = 0; j<m; j++) {
+				data[i][j] = a[i][j];
+			}
+		}
+	}
+	
     // return n-by-n identity matrix I
     public static int[][] identity(int n) {
         int[][] a = new int[n][n];
@@ -88,5 +110,14 @@ public class Matrix {
             for (int i = 0; i < m; i++)
                 y[j] += a[i][j] * x[i];
         return y;
+    }
+    
+    // returns B = A^n
+    public static int[][] power(int[][] a, int n){
+    	int[][] b = identity (a.length);
+    	for (int k = 0; k<n ; k++) {
+    		b = multiply(b,a);
+    	}
+    	return b;    	
     }
 }
