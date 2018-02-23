@@ -80,10 +80,10 @@ public class Graph {
 		for (int i = 0; i<aretes.size(); i++) {
 			Sommet a = aretes.get(i).a;
 			Sommet b = aretes.get(i).b;
-			if (a == x) {
+			if (a.num == x.num) {
 				s.add(b);
 			} else {
-				if (b == x) {
+				if (b.num == x.num) {
 					s.add(a);	
 				}	
 			}
