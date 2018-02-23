@@ -14,12 +14,12 @@ public class MatriceAdjacence extends Matrix {
 		for (int i=1; i<this.n+1; i++) { //Correctif +1 sur les indices car on commence a 1
 			for (int j=1; j<this.m+1; j++) {
 				for (int k = 0; k<g.nbLignes-1; k++) { //On mets un -1 parce qu'on ne compte pas la premiere ligne du texte
-					int a = g.aretes.get(k).a; //OK
-					int b = g.aretes.get(k).b; //OK
-					if ((i==a)&&(j==b)) {
+					Sommet a = g.aretes.get(k).a; //OK
+					Sommet b = g.aretes.get(k).b; //OK
+					if ((i==a.num)&&(j==b.num)) {
 						this.data[i-1][j-1] = 1;
-					} else if ((i==b)&&(j==a)) {
-						this.data[i-1][a-1] = 1;
+					} else if ((i==b.num)&&(j==a.num)) {
+						this.data[i-1][a.num-1] = 1;
 					}
 				}
 			}

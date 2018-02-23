@@ -1,9 +1,9 @@
 
 public class Arete {
 	
-	protected int a, b;
+	protected Sommet a, b;
 	
-	public Arete(int x, int y) {
+	public Arete(Sommet x, Sommet y) {
 		this.a = x;
 		this.b = y;
 	}

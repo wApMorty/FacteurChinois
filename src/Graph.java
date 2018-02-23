@@ -5,20 +5,23 @@ import java.util.ArrayList;
 
 public class Graph {
 
-	protected static ArrayList<Arete> aretes;
-	protected static int nbLignes = 10; //Need to find how to fix it
-	protected static int nbPoints;
+	protected  ArrayList<Arete> aretes;
+	protected  int nbLignes = 10; //Need to find how to fix it
+	protected  int nbPoints;
 	
 	public Graph () {
-		Graph.aretes = new ArrayList<Arete>();
+		this.aretes = new ArrayList<Arete>();
 	}
 	
 	public Graph (String texte) {
-		ArrayList<Arete> aretes = new ArrayList<Arete>();
+		this.aretes = new ArrayList<Arete>();
 		int[][] data = lectureFichier(texte);//On cree une ArrayList a deux dimensions = matrice)
 		for (int i = 1; i<data.length; i++) {
-			this.add(data[i][0], data[i][1]);
+			Sommet a = new Sommet(data[i][0]);
+			Sommet b = new Sommet(data[i][1]);
+			this.add(a, b);
 		}
+		
 	}
 	
 	//Ajouter une arete
@@ -27,7 +30,7 @@ public class Graph {
 	}
 	
 	//Methode pour ajouter une arete sans devoir declarer les aretes
-	public void add (int a, int b) {
+	public void add (Sommet a, Sommet b) {
 		Arete arete = new Arete(a, b);
 		aretes.add(arete);
 	}
@@ -38,14 +41,14 @@ public class Graph {
 	}
 	
 	//Methode pour retirer une arete sans devoir la declarer
-	public void remove (int a, int b) {
+	public void remove (Sommet a, Sommet b) {
 		Arete arete = new Arete(a, b);
 		aretes.remove(arete);
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
 	//DONE
-	public static int[][] lectureFichier(String fichier){
+	public int[][] lectureFichier(String fichier){
 		int[][] output = null;
 		try {
 			//Initialisation de la lecture du fichier
@@ -72,11 +75,11 @@ public class Graph {
 	
 	//Methode qui renvoie une ArrayList avec les successeurs d'un point x dans un graph g
 	//DONE
-	public static ArrayList<Integer> successeurs (int x) {
-		ArrayList<Integer> s = new ArrayList<Integer>();
+	public ArrayList<Sommet> successeurs (Sommet x) {
+		ArrayList<Sommet> s = new ArrayList<Sommet>();
 		for (int i = 0; i<aretes.size(); i++) {
-			int a = aretes.get(i).a;
-			int b = aretes.get(i).b;
+			Sommet a = aretes.get(i).a;
+			Sommet b = aretes.get(i).b;
 			if (a == x) {
 				s.add(b);
 			} else {
@@ -88,30 +91,62 @@ public class Graph {
 		return s;
 	}
 	
-	public boolean estUnPont(int x, int y) {
+	public boolean estUnPont(Sommet x, Sommet y) {
 		boolean isPont = true;
 		//On stocke les aretes retirees pour pouvoir les remettre apres
 		ArrayList<Arete> removed = new ArrayList<Arete>();
 		//On retire l'arete du graphe
 		for (int i = 0; i<aretes.size(); i++) {
-			int a = aretes.get(i).a;
-			int b = aretes.get(i).b;
+			Sommet a = aretes.get(i).a;
+			Sommet b = aretes.get(i).b;
 			if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
 				removed.add(aretes.get(i));
 				remove(a,b);
 			}
 		}
 		MatriceAdjacence a = new MatriceAdjacence(this);
-		int[][] s = Matrix.identity(nbPoints);
+		int[][] s = new int[nbPoints][nbPoints]; 
+		s = Matrix.identity(nbPoints);
 		//On boucle pour calculer la somme S dans l'algorithme de Fleury
 		for (int k = 1; k<nbPoints-1; k++) {
 			s = Matrix.add(s, Matrix.power(a.data,k));
 		}
 		//On boucle pour tester la valeur de s_i,j et verifier que l'arete (i,j) est un pont ou non
-		if (s[x][y]!=0) {
+		if (s[x.num][y.num]!=0) {
 			isPont = false;
 		}
 		
 		return isPont;
+	}
+	
+	public ArrayList<Sommet> Fleury (Sommet x){
+		ArrayList<Sommet> C = new ArrayList<Sommet>(); //Integer au lieu de int parce que les types de base marchent pas, need un wrapper
+		C.add(x);
+		//On va enlever des aretes plus tard donc on les stock pour pouvoir les remettre apres traitement
+		ArrayList<Arete> removed = new ArrayList<Arete>();
+		while (!aretes.isEmpty()) { //Tant que G n'est pas vide
+			//On recupere l'ensemble des successeurs qu'on stocke dans une liste
+			ArrayList<Sommet> successeurs = successeurs(x);
+			System.out.println(successeurs);
+			int i = 0;
+			Sommet y = successeurs.get(i);
+			while ((estUnPont(x, y))&&(successeurs.size()>1)) {
+				i++;
+				y = successeurs.get(i);
+			}
+			C.add(y);
+			//On parcourt G pour retrouver l'arete (x,y) et la remove
+			for (int k = 0; k<aretes.size(); k++) {
+				Sommet a = aretes.get(k).a;
+				Sommet b = aretes.get(k).b;
+				if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
+					removed.add(aretes.get(k));
+					remove(a,b);
+				}
+			}
+			x = y;
+		}
+		
+		return C;
 	}
 }

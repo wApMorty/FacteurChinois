@@ -2,8 +2,8 @@
 
 public abstract class Matrix {
 
-	protected static int[][] data;
-	protected static int n, m;
+	protected int[][] data;
+	protected int n, m;
 	
 	//empty constructor
 	public Matrix (int n, int m) {
@@ -33,7 +33,7 @@ public abstract class Matrix {
     }
 
     // return x . y
-    public static int dot(int[] x, int[] y) {
+    public int dot(int[] x, int[] y) {
         if (x.length != y.length) throw new RuntimeException("Illegal vector dimensions.");
         int sum = 0;
         for (int i = 0; i < x.length; i++)
@@ -42,7 +42,7 @@ public abstract class Matrix {
     }
 
     // return B = A^T
-    public static int[][] transpose(int[][] a) {
+    public int[][] transpose(int[][] a) {
         int m = a.length;
         int n = a[0].length;
         int[][] b = new int[n][m];
@@ -64,7 +64,7 @@ public abstract class Matrix {
     }
 
     // return c = a - b
-    public static int[][] subtract(int[][] a, int[][] b) {
+    public int[][] subtract(int[][] a, int[][] b) {
         int m = a.length;
         int n = a[0].length;
         int[][] c = new int[m][n];
@@ -90,7 +90,7 @@ public abstract class Matrix {
     }
 
     // matrix-vector multiplication (y = A * x)
-    public static int[] multiply(int[][] a, int[] x) {
+    public int[] multiply(int[][] a, int[] x) {
         int m = a.length;
         int n = a[0].length;
         if (x.length != n) throw new RuntimeException("Illegal matrix dimensions.");
@@ -103,7 +103,7 @@ public abstract class Matrix {
 
 
     // vector-matrix multiplication (y = x^T A)
-    public static int[] multiply(int[] x, int[][] a) {
+    public int[] multiply(int[] x, int[][] a) {
         int m = a.length;
         int n = a[0].length;
         if (x.length != m) throw new RuntimeException("Illegal matrix dimensions.");
@@ -124,7 +124,7 @@ public abstract class Matrix {
     }
     
     //prints the matrix
-    public static void show() {
+    public  void show() {
     	for (int i = 0; i<n; i++) {
     		System.out.print("[");
     		for (int j = 0; j<m; j++) {
