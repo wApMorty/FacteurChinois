@@ -13,7 +13,7 @@ public class MatriceAdjacence extends Matrix {
 		//Remplissage des 1 dans la matrice
 		for (int i=1; i<this.n+1; i++) { //Correctif +1 sur les indices car on commence a 1
 			for (int j=1; j<this.m+1; j++) {
-				for (int k = 0; k<g.nbLignes-1; k++) { //On mets un -1 parce qu'on ne compte pas la premiere ligne du texte
+				for (int k = 0; k<g.aretes.size()-1; k++) { //On mets un -1 parce qu'on ne compte pas la premiere ligne du texte
 					Sommet a = g.aretes.get(k).a; //OK
 					Sommet b = g.aretes.get(k).b; //OK
 					if ((i==a.num)&&(j==b.num)) {

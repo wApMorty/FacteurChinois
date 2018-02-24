@@ -8,4 +8,8 @@ public class Arete {
 		this.b = y;
 	}
 	
+	public String toString() {
+		return (this.a.num + " - " + this.b.num);
+	}
+	
 }

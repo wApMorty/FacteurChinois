@@ -7,12 +7,9 @@ public class Main_v2 {
 
 		String texte = "facteur6_1.txt";
 		Graph g = new Graph(texte);
-		MatriceAdjacence m = new MatriceAdjacence(g);
-		Sommet depart = new Sommet(1);//OK JUSQUE LA
+		Sommet depart = new Sommet(2);//OK JUSQUE LA
 		ArrayList<Sommet> chemin = g.Fleury(depart);
 		System.out.println(chemin);
 
 	}
-
-
 }

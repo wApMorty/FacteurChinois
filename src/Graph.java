@@ -37,13 +37,21 @@ public class Graph {
 	
 	//Retirer une arete
 	public void remove(Arete a) {
-		aretes.remove(a);
+		for (int i = 0; i<aretes.size();i++) {
+			if (aretes.get(i).equals(a)) {
+				aretes.remove(i);
+			}
+		}
 	}
 	
 	//Methode pour retirer une arete sans devoir la declarer
 	public void remove (Sommet a, Sommet b) {
 		Arete arete = new Arete(a, b);
-		aretes.remove(arete);
+		for (int i = 0; i<aretes.size();i++) {
+			if ((aretes.get(i).a.num==arete.a.num)&&(aretes.get(i).b.num==arete.b.num)) {
+				aretes.remove(i);
+			}
+		}
 	}
 	
 	//Methode pour lire un fichier texte et en sortir les valeurs sous forme de tableau a 2 colonnes. Utile dans matriceAdjacence
@@ -99,7 +107,7 @@ public class Graph {
 		for (int i = 0; i<aretes.size(); i++) {
 			Sommet a = aretes.get(i).a;
 			Sommet b = aretes.get(i).b;
-			if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
+			if (((a.num==x.num)&&(b.num==y.num))||((a.num==y.num)&&(b.num==x.num))) {
 				removed.add(aretes.get(i));
 				remove(a,b);
 			}
@@ -112,8 +120,13 @@ public class Graph {
 			s = Matrix.add(s, Matrix.power(a.data,k));
 		}
 		//On boucle pour tester la valeur de s_i,j et verifier que l'arete (i,j) est un pont ou non
-		if (s[x.num][y.num]!=0) {
+		if (s[x.num-1][y.num-1]!=0) {
 			isPont = false;
+		}
+		
+		//On remet les aretes enlevees pour le test dans le graphe
+		for (int i =0; i<removed.size(); i++) {
+			aretes.add(removed.get(i));
 		}
 		
 		return isPont;
@@ -122,12 +135,9 @@ public class Graph {
 	public ArrayList<Sommet> Fleury (Sommet x){
 		ArrayList<Sommet> C = new ArrayList<Sommet>(); //Integer au lieu de int parce que les types de base marchent pas, need un wrapper
 		C.add(x);
-		//On va enlever des aretes plus tard donc on les stock pour pouvoir les remettre apres traitement
-		ArrayList<Arete> removed = new ArrayList<Arete>();
 		while (!aretes.isEmpty()) { //Tant que G n'est pas vide
 			//On recupere l'ensemble des successeurs qu'on stocke dans une liste
 			ArrayList<Sommet> successeurs = successeurs(x);
-			System.out.println(successeurs);
 			int i = 0;
 			Sommet y = successeurs.get(i);
 			while ((estUnPont(x, y))&&(successeurs.size()>1)) {
@@ -139,8 +149,7 @@ public class Graph {
 			for (int k = 0; k<aretes.size(); k++) {
 				Sommet a = aretes.get(k).a;
 				Sommet b = aretes.get(k).b;
-				if (((a==x)&&(b==y))||((a==y)&&(b==x))) {
-					removed.add(aretes.get(k));
+				if (((a.num==x.num)&&(b.num==y.num))||((a.num==y.num)&&(b.num==x.num))) {
 					remove(a,b);
 				}
 			}
